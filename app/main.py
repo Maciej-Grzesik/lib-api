@@ -22,19 +22,19 @@ app = FastAPI(
 
 app.include_router(probe_router, prefix="/probe", tags=["probe"])
 
-# Sets all CORS enabled origins
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        str(origin).rstrip("/") for origin in get_settings().http.backend_cors_origins
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Guards against HTTP Host Header attacks
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=get_settings().http.allowed_hosts,
+)
+
+# Sets all CORS enabled origins
+app.add_middleware(
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    middleware_class=CORSMiddleware,
+            allow_origins=[
+                str(origin).rstrip("/") for origin in get_settings().http.backend_cors_origins
+            ],
 )
