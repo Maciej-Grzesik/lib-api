@@ -51,3 +51,19 @@ async def update_book_status(
 
     await session.commit()
     return book
+
+
+@router.delete("/{serial_number}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_book(
+    serial_number: SixDigitIdentifier,
+    session: Annotated[AsyncSession, Depends(new_async_session)],
+) -> None:
+    book = await session.scalar(select(Book).where(Book.serial_number == serial_number))
+    if book is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found",
+        )
+
+    await session.delete(book)
+    await session.commit()
