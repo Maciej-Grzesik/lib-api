@@ -41,7 +41,6 @@ jobs:
 
       - name: Run tests
         env:
-          SECURITY__JWT_SECRET_KEY: very-not-secret
           DATABASE__HOSTNAME: localhost
           DATABASE__PASSWORD: postgres
         run: |

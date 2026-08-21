@@ -1,6 +1,6 @@
 # File with environment variables and general configuration logic.
-# Env variables are combined in nested groups like "Security", "Database" etc.
-# So environment variable (case-insensitive) for jwt_secret_key will be "security__jwt_secret_key"
+# Env variables are combined in nested groups like "Http" and "Database".
+# For example, the environment variable for allowed_hosts is "http__allowed_hosts".
 #
 # Pydantic priority ordering:
 #
@@ -25,16 +25,7 @@ from sqlalchemy.engine.url import URL
 PROJECT_DIR = Path(__file__).parent.parent.parent
 
 
-class Security(BaseModel):
-    jwt_issuer: str = "my-app"
-    jwt_secret_key: SecretStr = SecretStr(
-        "change-me-to-a-strong-secret-key-at-least-32-chars-long"
-    )
-    jwt_access_token_expire_secs: int = Field(default=15 * 60, gt=10)  # 15min
-    jwt_refresh_token_expire_secs: int = Field(default=28 * 24 * 3600, gt=60)  # 28d
-    jwt_algorithm: str = "HS256"
-
-    password_bcrypt_rounds: int = 12
+class Http(BaseModel):
     allowed_hosts: list[str] = ["localhost", "127.0.0.1", "0.0.0.0"]
     backend_cors_origins: list[AnyHttpUrl] = []
 
@@ -55,7 +46,7 @@ class Prometheus(BaseModel):
 
 
 class Settings(BaseSettings):
-    security: Security = Field(default_factory=Security)
+    http: Http = Field(default_factory=Http)
     database: Database = Field(default_factory=Database)
     prometheus: Prometheus = Field(default_factory=Prometheus)
 
