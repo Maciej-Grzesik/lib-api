@@ -84,7 +84,11 @@ async def fixture_session_with_rollback(
     connection = await database_session._ASYNC_ENGINE.connect()
     transaction = await connection.begin()
 
-    session = AsyncSession(bind=connection, expire_on_commit=False)
+    session = AsyncSession(
+        bind=connection,
+        expire_on_commit=False,
+        join_transaction_mode="create_savepoint",
+    )
 
     monkeypatch.setattr(
         database_session,

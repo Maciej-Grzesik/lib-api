@@ -19,6 +19,8 @@ class BookCreate(BaseModel):
     title: NonBlankString
     author: NonBlankString
 
+    model_config = ConfigDict(extra="forbid")
+
 
 class BookResponse(BaseModel):
     uuid: UUID
