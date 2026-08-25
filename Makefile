@@ -10,7 +10,7 @@ help:  ## Print this help message
 
 .PHONY: local-setup
 local-setup:  ## Setup local postgres database
-	docker compose up -d
+	docker compose up -d postgres_db
 
 .PHONY: up
 up: local-setup  ## Run FastAPI development server

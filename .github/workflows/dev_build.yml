@@ -33,4 +33,4 @@ jobs:
         with:
           file: Dockerfile
           push: true
-          tags: rafsaf/minimal-fastapi-postgres-template:${{ env.IMAGE_TAG }}
+          tags: ${{ secrets.DOCKER_USER }}/lib-api:${{ env.IMAGE_TAG }}
