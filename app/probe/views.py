@@ -2,6 +2,7 @@ import logging
 import typing
 
 from fastapi import APIRouter, Depends
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database_session import new_async_session
@@ -18,6 +19,7 @@ async def live_probe() -> typing.Literal["ok"]:
 
 @router.get("/health", response_model=str)
 async def health_probe(
-    _: AsyncSession = Depends(new_async_session),
+    session: typing.Annotated[AsyncSession, Depends(new_async_session)],
 ) -> typing.Literal["app and database ok"]:
+    await session.execute(text("SELECT 1"))
     return "app and database ok"
