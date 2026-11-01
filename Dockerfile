@@ -1,4 +1,4 @@
-FROM python:3.14-slim-trixie AS base
+FROM python:3.15-slim-trixie AS base
 
 ENV PYTHONUNBUFFERED=1
 WORKDIR /build
